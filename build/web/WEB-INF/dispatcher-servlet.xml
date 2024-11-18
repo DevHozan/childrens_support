@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <!--
+    Most controllers will use the ControllerClassNameHandlerMapping above, but
+    for the index controller we are using ParameterizableViewController, so we must
+    define an explicit mapping for it.
+    -->
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="login.htm">indexController</prop>
+                <prop key="cases.htm">casesController</prop>
+                <prop key="users.htm">usersController</prop>
+                <prop key="schools.htm">schoolController</prop>
+                <prop key="children.htm">childrenController</prop>
+                <prop key="foster_families.htm">fosterfamiliesController</prop>
+                <prop key="error_page.htm">ErrorController</prop>
+                <prop key="risk.htm">RiskController</prop>
+                <prop key="abuse.htm">AbuseController</prop>
+                <prop key="documents.htm">DocumentController</prop>
+                <prop key="collaboration.htm">CollaborationController</prop>
+                <prop key="guardian.htm">GuardianController</prop>
+                <prop key="emergency.htm">EmergencyController</prop>
+                <prop key="education.htm">EducationController</prop>
+                <prop key="advocacy.htm">AdvocacyController</prop>
+                <prop key="support_requests.htm">SupportController</prop>
+                <prop key="legalSupport.htm">LegalController</prop>
+            </props>
+            
+        </property>
+    </bean>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/"
+          p:suffix=".jsp" />
+
+    <!--
+    The index controller.
+    -->
+    <bean name="indexController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="login" />
+    
+   
+    <bean name="ErrorController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="error" />
+    
+    <bean name="casesController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="cases" />
+
+    <bean name="usersController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="users" />
+    
+    
+    <bean name="schoolController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="school" />
+    <bean name="childrenController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="children" />
+    
+    <bean name="fosterfamiliesController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="fosterfamilies" />
+    
+    <bean name="RiskController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="risk" />
+    <bean name="AbuseController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="abuse" />
+    
+    <bean name="DocumentController"
+    class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="document" />
+    
+    <bean name="CollaborationController"
+    class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="collaboration" />
+    
+    <bean name="GuardianController"
+    class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="guardian" />
+    
+    <bean name="EmergencyController"
+    class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="emergency" />
+     <bean name="EducationController"
+     class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="education" />
+     
+     <bean name="AdvocacyController"
+     class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="advocacy" />
+      <bean name="SupportController"
+     class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="support" />
+      
+      
+      <bean name="LegalController"
+     class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="legal_support" />
+     
+    
+</beans>

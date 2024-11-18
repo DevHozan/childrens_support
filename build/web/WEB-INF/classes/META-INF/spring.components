@@ -1,0 +1,10 @@
+AbuseReportModel=javax.servlet.annotation.WebServlet
+CaseModel=javax.servlet.annotation.WebServlet
+ChildModel=javax.servlet.annotation.WebServlet
+DocumentModel=javax.servlet.annotation.WebServlet,javax.servlet.annotation.MultipartConfig
+FosterFamilyModel=javax.servlet.annotation.WebServlet
+LegalSupportModel=javax.servlet.annotation.WebServlet
+RiskModel=javax.servlet.annotation.WebServlet
+SchoolModel=javax.servlet.annotation.WebServlet
+SupportRequestsModel=javax.servlet.annotation.WebServlet
+UsersModel=javax.servlet.annotation.WebServlet
