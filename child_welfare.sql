@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 18 nov. 2024 à 01:34
+-- Généré le : lun. 18 nov. 2024 à 12:19
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -126,15 +126,16 @@ CREATE TABLE `fosterfamilies` (
   `capacity` int(11) NOT NULL,
   `current_placements` int(11) NOT NULL,
   `background_check_status` varchar(50) NOT NULL,
-  `training_completed` varchar(10) NOT NULL
+  `training_completed` varchar(10) NOT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `fosterfamilies`
 --
 
-INSERT INTO `fosterfamilies` (`id`, `family_name`, `contact_number`, `address`, `capacity`, `current_placements`, `background_check_status`, `training_completed`) VALUES
-(3, 'wwwEEgg', '086647', 'Burera', 2, 2, 'gffr', '0');
+INSERT INTO `fosterfamilies` (`id`, `family_name`, `contact_number`, `address`, `capacity`, `current_placements`, `background_check_status`, `training_completed`, `created_at`) VALUES
+(3, 'wwwEEgg', '086647', 'Burera', 2, 2, 'gffr', '0', '2024-11-18');
 
 -- --------------------------------------------------------
 
@@ -221,6 +222,8 @@ CREATE TABLE `users` (
   `role` varchar(50) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `gender` varchar(12) NOT NULL DEFAULT 'Male',
+  `status` varchar(23) NOT NULL DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -228,9 +231,10 @@ CREATE TABLE `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password_hash`, `role`, `email`, `phone`, `created_at`) VALUES
-(1, 'client@gmail.com', '1234', 'admin', 'hozana@gmail.com', '0791724884', '2024-11-16 17:17:49'),
-(2, 'client@gmail.com', '1234', 'admin', 'hozana@gmail.com', '0791724884', '2024-11-16 19:54:52');
+INSERT INTO `users` (`user_id`, `username`, `password_hash`, `role`, `email`, `phone`, `gender`, `status`, `created_at`) VALUES
+(1, 'client@gmail.com', '1234', 'admin', 'hozana@gmail.com', '0791724884', 'male', 'active', '2024-11-16 17:17:49'),
+(2, 'client@gmail.com', '1234', 'admin', 'hozana@gmail.com', '0791724884', 'male', 'active', '2024-11-16 19:54:52'),
+(3, 'client@gmail.com', '1234', 'admin', 'hozana@gmail.com', '0791724884', 'male', 'active', '2024-11-18 08:45:06');
 
 --
 -- Index pour les tables déchargées
@@ -347,7 +351,7 @@ ALTER TABLE `support_requests`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Contraintes pour les tables déchargées

@@ -6,6 +6,8 @@
     <title>Manager Portal - ChildGuard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <style>
         /* General Styles */
         body {
@@ -167,25 +169,25 @@
 </head>
 <body>
     <!-- Sidebar with links -->
-    <div class="sidebar">
-        <div class="menu-title">ChildGuard</div>
-        <a href="#" class="menu-item">Dashboard</a>
-        <a href="CaseModel" class="menu-item">Cases</a>
-        <a href="RiskModel" class="menu-item">Risk</a>
-        <a href="AbuseReportModel" class="menu-item">Abuse</a>
-        <a href="DocumentModel" class="menu-item">Documents</a>
-        <a href="collaboration.htm" class="menu-item">Collaboration</a>
-        <a href="guardian.htm" class="menu-item">Guardian</a>
-        <a href="emergency.htm" class="menu-item">Emergency</a>
-        <a href="education.htm" class="menu-item">Education</a>
-        <a href="FosterFamilyModel" class="menu-item">Foster</a>
-        <a href="advocacy.htm" class="menu-item">Advocacy Portal</a>
-        <a href="SupportRequestsModel" class="menu-item">Telehealth</a>
-        
-        <a href="LegalSupportModel" class="menu-item">Legal Support</a>
-<!--        <a href="OutreachModel" class="menu-item">Outreach</a>-->
-        
-    </div>
+ <!-- Sidebar with links -->
+<div class="sidebar">
+    <div class="menu-title">ChildGuard</div>
+    <a href="#" class="menu-item"><i class="bi bi-house-door"></i> Dashboard</a>
+    <a href="CaseModel" class="menu-item"><i class="bi bi-file-earmark-medical"></i> Cases</a>
+    <a href="RiskModel" class="menu-item"><i class="bi bi-shield-lock"></i> Risk</a>
+    <a href="AbuseReportModel" class="menu-item"><i class="bi bi-flag"></i> Abuse</a>
+    <a href="DocumentModel" class="menu-item"><i class="bi bi-journal-text"></i> Documents</a>
+    <a href="collaboration.htm" class="menu-item"><i class="bi bi-people"></i> Collaboration</a>
+    <a href="guardian.htm" class="menu-item"><i class="bi bi-person-lock"></i> Guardian</a>
+    <a href="emergency.htm" class="menu-item"><i class="bi bi-heart-pulse"></i> Emergency</a>
+    <a href="education.htm" class="menu-item"><i class="bi bi-book"></i> Education</a>
+    <a href="FosterFamilyModel" class="menu-item"><i class="bi bi-house-heart"></i> Foster</a>
+    <a href="advocacy.htm" class="menu-item"><i class="bi bi-volume-up"></i> Advocacy Portal</a>
+    <a href="SupportRequestsModel" class="menu-item"><i class="bi bi-telephone-inbound"></i> Telehealth</a>
+    <a href="LegalSupportModel" class="menu-item"><i class="bi bi-briefcase"></i> Legal Support</a>
+    <a href="LogoutModel" class="menu-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+
 
     <!-- Hamburger Menu Button -->
     <div class="menu-toggle">

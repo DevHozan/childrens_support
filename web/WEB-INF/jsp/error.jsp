@@ -6,6 +6,15 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="javax.servlet.http.HttpSession" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
+
 
 <!DOCTYPE html>
 <html>

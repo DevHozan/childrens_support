@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.RequestDispatcher;
+import org.springframework.dao.DataAccessException;
 
 @WebServlet("/DocumentModel")
 @MultipartConfig(
@@ -51,6 +52,26 @@ public class DocumentModel extends HttpServlet {
             } else {
                 request.setAttribute("message", "Unknown action.");
             }
+
+          
+
+            // SQL queries to get document counts
+String totalDocumentsSql = "SELECT COUNT(*) FROM documents";
+String publicDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'public'";
+String privateDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'private'";
+String restrictedDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'restricted'";
+
+// Fetch counts using jdbcTemplate
+int totalDocuments = jdbcTemplate.queryForObject(totalDocumentsSql, Integer.class);
+int publicDocuments = jdbcTemplate.queryForObject(publicDocumentsSql, Integer.class);
+int privateDocuments = jdbcTemplate.queryForObject(privateDocumentsSql, Integer.class);
+int restrictedDocuments = jdbcTemplate.queryForObject(restrictedDocumentsSql, Integer.class);
+
+// Set attributes to be passed to the JSP
+request.setAttribute("totalDocuments", totalDocuments);
+request.setAttribute("publicDocuments", publicDocuments);
+request.setAttribute("privateDocuments", privateDocuments);
+request.setAttribute("restrictedDocuments", restrictedDocuments);
 
             List<Map<String, Object>> documentList = getDocumentRecords();
             request.setAttribute("documentRecords", documentList);

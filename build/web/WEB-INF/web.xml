@@ -60,6 +60,10 @@
         <servlet-name>LoginModel</servlet-name>
         <servlet-class>LoginModel</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutModel</servlet-name>
+        <servlet-class>LogoutModel</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.htm</url-pattern>
@@ -107,6 +111,10 @@
     <servlet-mapping>
         <servlet-name>LoginModel</servlet-name>
         <url-pattern>/LoginModel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutModel</servlet-name>
+        <url-pattern>/LogoutModel</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

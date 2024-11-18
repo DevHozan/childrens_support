@@ -33,6 +33,7 @@
                 <prop key="advocacy.htm">AdvocacyController</prop>
                 <prop key="support_requests.htm">SupportController</prop>
                 <prop key="legalSupport.htm">LegalController</prop>
+                <prop key="signup.htm">SignupController</prop>
             </props>
             
         </property>
@@ -112,6 +113,10 @@
       <bean name="LegalController"
      class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="legal_support" />
+      
+       <bean name="SignupController"
+     class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="signup" />
      
     
 </beans>

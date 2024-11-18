@@ -1,5 +1,14 @@
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
+
 
 <div class="main-content">
     <!-- Summary Cards -->
@@ -46,6 +55,11 @@
                             </button>
                         </td>
                         <td>
+                            
+                                                                                                     <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("role") != "admin") { %>
+        
                             <form action="ChildModel" method="get" style="display:inline;">
                                 <input type="hidden" name="action" value="Delete">
                                 <input type="hidden" name="child_id" value="${child.child_id}">
@@ -53,6 +67,11 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
+        <%
+        
+    }
+%>
+                           
                         </td>
                     </tr>
                 </c:forEach>

@@ -1,5 +1,13 @@
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
 
 <div class="main-content">
     <!-- Summary Cards -->
@@ -42,11 +50,19 @@
                             </button>
                         </td>
                         <td>
-                            <form action="RiskModel" method="get" onsubmit="return confirm('Are you sure you want to delete this investigation?');">
+                                                                                                                                                          <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("role") != "admin") { %>
+      <form action="RiskModel" method="get" onsubmit="return confirm('Are you sure you want to delete this investigation?');">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="${investigation.id}">
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </form>
+        <%
+        
+    }
+%>
+                            
                         </td>
                     </tr>
                 </c:forEach>

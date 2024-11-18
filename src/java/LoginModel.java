@@ -49,6 +49,7 @@ public class LoginModel extends HttpServlet {
 
                     session.setAttribute("role", role);
                     session.setAttribute("id", user.get("user_id"));
+                   
 
 //                    if ("admin".equals(role)) {
 //                        // Redirect to the dashboard for admin
@@ -57,6 +58,7 @@ public class LoginModel extends HttpServlet {
 //                        // Redirect for non-admin users
 //                        response.sendRedirect(role + "_dashboard.htm");
                     //}
+
                      response.sendRedirect("cases.htm");
                 } else {
                     // If no user is found, set the error message

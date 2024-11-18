@@ -1,22 +1,32 @@
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
+
 
 <div class="main-content">
     <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="card total-cases">
-            Total Cases <br><span>300</span>
-        </div>
-        <div class="card male-cases">
-            Male Cases <br><span>200</span>
-        </div>
-        <div class="card female-cases">
-            Female Cases <br><span>100</span>
-        </div>
-        <div class="card weekly-cases">
-            This Week <br><span>25</span>
-        </div>
+    <div class="card total-cases">
+        Total Cases <br><span class="text-dark">${totalCases}</span>
     </div>
+    <div class="card male-cases">
+        Male Cases <br><span>${activeCasesMaleCount}</span>
+    </div>
+    <div class="card female-cases">
+        Female Cases <br><span>${activeCasesFemaleCount}</span>
+    </div>
+    <div class="card weekly-cases">
+        This Week <br><span>${totalCasesWeek}</span>
+    </div>
+</div>
+
 
     <!-- New Case Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newCaseModal">+ New Case</button>
@@ -56,11 +66,21 @@
                             </button>
                         </td>
                         <td>
-                            <form action="CaseModel" method="get" onsubmit="return confirm('Are you sure you want to delete this case?');">
+                            
+                                                                         <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("role") != "admin") { %>
+        
+                                  <form action="CaseModel" method="get" onsubmit="return confirm('Are you sure you want to delete this case?');">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="${cases.id}">
                                 <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </form>
+        <%
+        
+    }
+%>
+                            
                         </td>
                     </tr>
                 </c:forEach>

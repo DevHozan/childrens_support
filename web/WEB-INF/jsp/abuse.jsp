@@ -1,12 +1,21 @@
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
+
 
 <div class="main-content">
     <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="card total-reports">Total Reports <br><span>${totalReports}</span></div>
-        <div class="card resolved-reports">Resolved <br><span>${resolvedReports}</span></div>
-        <div class="card pending-reports">Pending <br><span>${pendingReports}</span></div>
+        <div class="card total-reports bg-primary">Total Reports <br><span class="text-dark">${abuseReportsCount}</span></div>
+        <div class="card resolved-reports bg-info">Resolved <br><span>${resolvedReports}</span></div>
+        <div class="card pending-reports bg-success">Pending <br><span>${pendingReports}</span></div>
         <div class="card weekly-reports">This Week <br><span>${weeklyReports}</span></div>
     </div>
 
@@ -36,19 +45,30 @@
                         <td>${report.status}</td>
                         <td>${report.last_update}</td>
                         <td>
+                            
                             <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#updateReportModal" 
                                     onclick="populateUpdateForm(${report.report_id}, '${report.child_name}', '${report.date_of_report}', '${report.status}')">
                                 <i class="fas fa-pen"></i>
                             </button>
                         </td>
                         <td>
-                            <form action="AbuseReportModel" method="get" style="display:inline;">
+                                             <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("role") != "admin") { %>
+        
+                                    <form action="AbuseReportModel" method="get" style="display:inline;">
                                 <input type="hidden" name="action" value="Delete">
                                 <input type="hidden" name="report_id" value="${report.report_id}">
                                 <button class="btn btn-danger btn-sm" type="submit">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
+        <%
+        
+    }
+%>
+
+
                         </td>
                     </tr>
                 </c:forEach>

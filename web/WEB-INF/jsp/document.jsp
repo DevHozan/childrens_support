@@ -1,13 +1,40 @@
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
+
 
 <div class="main-content">
     <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="card total-documents">Total Documents <br><span>300</span></div>
-        <div class="card public-documents">Public Documents <br><span>150</span></div>
-        <div class="card private-documents">Private Documents <br><span>100</span></div>
-        <div class="card restricted-documents">Restricted Documents <br><span>50</span></div>
+        <div class="summary-cards">
+    <!-- Total Documents -->
+    <div class="card total-documents bg-primary">
+        Total Documents <br><span>${totalDocuments}</span>
+    </div>
+    
+    <!-- Public Documents -->
+    <div class="card public-documents bg-info">
+        Public Documents <br><span>${publicDocuments}</span>
+    </div>
+    
+    <!-- Private Documents -->
+    <div class="card private-documents bg-success">
+        Private Documents <br><span>${privateDocuments}</span>
+    </div>
+    
+    <!-- Restricted Documents -->
+    <div class="card restricted-documents bg-secondary">
+        Restricted Documents <br><span>${restrictedDocuments}</span>
+    </div>
+</div>
+
     </div>
 
     <!-- New Document Button -->
@@ -37,12 +64,18 @@
                         <td>${document.last_modified}</td>
                         <td><a href="${document.document}" target="_blank">View Document</a></td>
                         <td>
+                            
                             <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#updateDocumentModal" 
                                     onclick="populateUpdateForm(${document.document_id}, '${document.document_type}', '${document.description}', '${document.access_level}', '${document.document}')">
                                 <i class="fas fa-pen"></i>
                             </button>
                         </td>
                         <td>
+                                                                                                                                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("role") != "admin") { %>
+        
+                          
                             <form action="DocumentModel" method="get" style="display:inline;">
                                 <input type="hidden" name="action" value="Delete">
                                 <input type="hidden" name="document_id" value="${document.document_id}">
@@ -50,6 +83,10 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
+        <%
+        
+    }
+%>
                         </td>
                         <td><i class="fas fa-share-alt"></i></td>
                     </tr>

@@ -1,14 +1,24 @@
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+                 <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("id") == null) {
+        // Redirect to the login page if not logged in
+        response.sendRedirect("login.htm");
+        return; // Stop further processing of the current page
+    }
+%>
+
 
 <div class="main-content">
     <!-- Summary Cards -->
-    <div class="summary-cards">
-        <div class="card total-cases">Total Cases <br><span>${totalCases}</span></div>
-        <div class="card male-cases">Male Cases <br><span>${maleCases}</span></div>
-        <div class="card female-cases">Female Cases <br><span>${femaleCases}</span></div>
-        <div class="card weekly-cases">This Week <br><span>${weeklyCases}</span></div>
-    </div>
+ <div class="summary-cards">
+    <div class="card total-foster-families bg-primary">Total Foster Families <br><span>${fosterFamiliesCount}</span></div>
+    <div class="card male-foster-families bg-info">Male Foster Families <br><span>${fosterFamiliesMaleCount}</span></div>
+    <div class="card female-foster-families bg-success">Female Foster Families <br><span>${fosterFamiliesFemaleCount}</span></div>
+    <div class="card weekly-foster-families bg-secondary">This Week's Foster Families <br><span>${fosterFamiliesWeekCount}</span></div>
+</div>
+
 
     <!-- New Foster Family Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFosterFamilyModal">+ New Foster Family</button>
@@ -50,13 +60,21 @@
                             </button>
                         </td>
                         <td>
-                            <form action="FosterFamilyModel" method="get" style="display:inline;">
+                                                                                                     <%
+    // Check if the session attribute 'id' exists
+    if (session.getAttribute("role") != "admin") { %>
+        <form action="FosterFamilyModel" method="get" style="display:inline;">
                                 <input type="hidden" name="action" value="Delete">
                                 <input type="hidden" name="id" value="${fosterFamily.id}">
                                 <button class="btn btn-danger btn-sm" type="submit">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
+        <%
+        
+    }
+%>
+                            
                         </td>
                     </tr>
                 </c:forEach>
