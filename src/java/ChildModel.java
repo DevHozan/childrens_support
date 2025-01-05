@@ -43,7 +43,7 @@ public class ChildModel extends HttpServlet {
                 deleteChild(request, session);
             }
 
-              
+              String childrens = "SELECT COUNT(*) FROM children";
         String activeUserssql = "SELECT COUNT(*) FROM users WHERE status = 'active'";
     String activeCountSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'active'";
     String closedCountSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed'";
@@ -62,8 +62,24 @@ public class ChildModel extends HttpServlet {
     
     String closedCasesMaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Male'";
     String closedCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female'";
+    
+    // Count of active boys
+    
+String activeBoysSql = "SELECT COUNT(*) FROM children WHERE gender = 'Male'";
+
+// Count of active girls
+String activeGirlsSql = "SELECT COUNT(*) FROM children WHERE gender = 'Female'";
+
+// Count of high-risk children
+String highRiskChildrenSql = "SELECT COUNT(*) FROM children WHERE risk_level = 'High'";
 
     // Querying the counts
+    int childrencount=jdbcTemplate.queryForObject(childrens, Integer.class);
+    int activeBoysCount = jdbcTemplate.queryForObject(activeBoysSql, Integer.class);
+int activeGirlsCount = jdbcTemplate.queryForObject(activeGirlsSql, Integer.class);
+int highRiskChildrenCount = jdbcTemplate.queryForObject(highRiskChildrenSql, Integer.class);
+
+
     int activeUsersCount = jdbcTemplate.queryForObject(activeUserssql, Integer.class);
     int activeCasesCount = jdbcTemplate.queryForObject(activeCountSql, Integer.class);
     int closedCasesCount = jdbcTemplate.queryForObject(closedCountSql, Integer.class);
@@ -84,6 +100,7 @@ public class ChildModel extends HttpServlet {
     int closedCasesFemaleCount = jdbcTemplate.queryForObject(closedCasesFemaleSql, Integer.class);
 
     // Setting attributes to be passed to the JSP
+    request.setAttribute("childrencount", childrencount);
     request.setAttribute("activeUsersCount", activeUsersCount);
     request.setAttribute("activeCasesCount", activeCasesCount);
     request.setAttribute("closedCasesCount", closedCasesCount);
@@ -140,6 +157,14 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     int closedCasesFemaleWeekCount = jdbcTemplate.queryForObject(closedCasesFemaleWeekSql, Integer.class);
 
     // Setting the results as request attributes
+    
+    
+    
+
+request.setAttribute("activeBoysCount", activeBoysCount);
+request.setAttribute("activeGirlsCount", activeGirlsCount);
+request.setAttribute("highRiskChildrenCount", highRiskChildrenCount);
+
     request.setAttribute("activeUsersWeekCount", activeUsersWeekCount);
     request.setAttribute("activeCasesWeekCount", activeCasesWeekCount);
     request.setAttribute("closedCasesWeekCount", closedCasesWeekCount);
@@ -208,6 +233,11 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
             String address = request.getParameter("address");
             String riskLevel = request.getParameter("risk_level");
             String status = request.getParameter("status");
+             String firstName = request.getParameter("first_name");
+            String lastName = request.getParameter("last_name");
+            String dateOfBirth = request.getParameter("date_of_birth");
+            String gender = request.getParameter("gender");
+            
 
             // Validate required fields
             if (address == null || address.isEmpty() || riskLevel == null || riskLevel.isEmpty() || status == null || status.isEmpty()) {
@@ -216,8 +246,9 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
             }
 
             // Update the child's details in the database
-            String sqlUpdate = "UPDATE children SET address = ?, risk_level = ?, status = ? WHERE child_id = ?";
-            jdbcTemplate.update(sqlUpdate, address, riskLevel, status, childId);
+            String sqlUpdate = "UPDATE children SET address = ?, risk_level = ?, status = ?, gender = ?, first_name = ?, last_name = ?, date_of_birth = ? WHERE child_id = ?";
+jdbcTemplate.update(sqlUpdate, address, riskLevel, status, gender, firstName, lastName, dateOfBirth, childId);
+
             session.setAttribute("message", "Child updated successfully.");
         } catch (NumberFormatException e) {
             session.setAttribute("message", "Invalid child ID. Update failed.");

@@ -13,14 +13,20 @@
 <div class="main-content">
     <!-- Summary Cards (This part can remain or be modified based on the data you want to display) -->
     <div class="summary-cards">
-        <div class="card total-cases">Total Support Requests <br><span>${totalRequests}</span></div>
-        <div class="card male-cases">Male Support Requests <br><span>${maleRequests}</span></div>
-        <div class="card female-cases">Female Support Requests <br><span>${femaleRequests}</span></div>
-        <div class="card weekly-cases">This Week <br><span>${weekRequests}</span></div>
+        <div class="card total-cases">Total Support Requests <br><span>${totalSupportRequests}</span></div>
+        <div class="card male-cases">Open Support Requests <br><span>${RequestopenedCount}</span></div>
+        <div class="card female-cases">Closed Support Requests <br><span>${RequestclosedCount}</span></div>
+        <div class="card weekly-cases">This Week <br><span>${SupportCountWeek}</span></div>
     </div>
 
     <!-- New Support Request Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSupportRequestModal">+ New Support Request</button>
+    
+<!--   <c:if test="${not empty message}">
+    <div class="text-info">${message}</div>
+</c:if>
+-->
+
 
     <!-- Support Request Table -->
     <div class="table-container">
@@ -37,6 +43,7 @@
                     <th>Location</th>
                     <th>Medical History</th>
                     <th>Description</th>
+                    <th>Status</th>
                     <th>Created At</th>
                     <th>Update</th>
                     <th>Delete</th>
@@ -55,6 +62,7 @@
                         <td>${request.location}</td>
                         <td>${request.medical_history}</td>
                         <td>${request.description}</td>
+                        <td>${request.status}</td>
                         <td>${request.created_at}</td>
                         <td>
                             <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#updateSupportRequestModal" 
@@ -66,7 +74,7 @@
                                                                                                                                                                                                                   <%
     // Check if the session attribute 'id' exists
     if (session.getAttribute("role") != "admin") { %>
-      <form action="SupportRequestsModel" method="post" style="display:inline;">
+      <form action="SupportRequestsModel" method="get" style="display:inline;">
                                 <input type="hidden" name="action" value="Delete">
                                 <input type="hidden" name="id" value="${request.id}">
                                 <button class="btn btn-danger btn-sm" type="submit">
@@ -193,6 +201,15 @@
                     <div class="form-group">
                         <label for="updateDescription">Description</label>
                         <textarea class="form-control" name="description" id="updateDescription" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">status</label>
+                        <select name="status" id="status" class="form-control">
+                            <option>Open</option>
+                            <option>Closed</option>
+                            <option>Pending</option>
+                        </select>
                     </div>
                     <input type="hidden" name="action" value="Update">
                     <div class="modal-footer">

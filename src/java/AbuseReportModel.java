@@ -30,6 +30,9 @@ public class AbuseReportModel extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
+            if (request.getAttribute("message") != null) {
+    request.removeAttribute("message");
+}
             HttpSession session = request.getSession();
             String action = request.getParameter("action");
 
@@ -61,8 +64,16 @@ public class AbuseReportModel extends HttpServlet {
     
     String closedCasesMaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Male'";
     String closedCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female'";
+    
+    String closedReportsSql = "SELECT COUNT(*) FROM abuse_reports WHERE status = 'closed'";
+    String openedReportsSql = "SELECT COUNT(*) FROM abuse_reports WHERE status = 'open'";
+    String pendingReportsSql = "SELECT COUNT(*) FROM abuse_reports WHERE status = 'pending'";
 
     // Querying the counts
+    int closedReports=jdbcTemplate.queryForObject(closedReportsSql, Integer.class);
+    int openedReports=jdbcTemplate.queryForObject(openedReportsSql, Integer.class);
+    int pendingReports= jdbcTemplate.queryForObject(pendingReportsSql, Integer.class); 
+    
     int activeUsersCount = jdbcTemplate.queryForObject(activeUserssql, Integer.class);
     int activeCasesCount = jdbcTemplate.queryForObject(activeCountSql, Integer.class);
     int closedCasesCount = jdbcTemplate.queryForObject(closedCountSql, Integer.class);
@@ -83,6 +94,9 @@ public class AbuseReportModel extends HttpServlet {
     int closedCasesFemaleCount = jdbcTemplate.queryForObject(closedCasesFemaleSql, Integer.class);
 
     // Setting attributes to be passed to the JSP
+    request.setAttribute("closedReports", closedReports);
+    request.setAttribute("openedReports", openedReports);
+    request.setAttribute("pendingReports", pendingReports);
     request.setAttribute("activeUsersCount", activeUsersCount);
     request.setAttribute("activeCasesCount", activeCasesCount);
     request.setAttribute("closedCasesCount", closedCasesCount);

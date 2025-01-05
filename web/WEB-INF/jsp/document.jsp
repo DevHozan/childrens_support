@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
                  <%
@@ -8,7 +9,7 @@
         return; // Stop further processing of the current page
     }
 %>
-
+    
 
 <div class="main-content">
     <!-- Summary Cards -->
@@ -39,6 +40,9 @@
 
     <!-- New Document Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newDocumentModal">+ New Document</button>
+ <c:if test="${not empty message}">
+<!--    <div class="text-info">${message}</div>-->
+</c:if>
 
     <!-- Documents Table -->
     <div class="table-container">
@@ -107,33 +111,44 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="DocumentModel" method="get" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="documentType">Document Type</label>
-                        <input type="text" class="form-control" name="documentType" id="documentType" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" name="description" id="description" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="accessLevel">Access Level</label>
-                        <select class="form-control" name="accessLevel" id="accessLevel" required>
-                            <option value="Public">Public</option>
-                            <option value="Private">Private</option>
-                            <option value="Restricted">Restricted</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="filePath">Document File</label>
-                        <input type="file" class="form-control" name="document" id="filePath" required>
-                    </div>
-                    <input type="hidden" name="action" value="Add">
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save Document</button>
-                    </div>
-                </form>
+               <form action="DocumentModel" method="get" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="documentType">Document Type</label>
+        <input type="text" class="form-control" name="documentType" id="documentType" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" name="description" id="description" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="accessLevel">Access Level</label>
+        <select class="form-control" name="accessLevel" id="accessLevel" required>
+            <option value="Public">Public</option>
+            <option value="Private">Private</option>
+            <option value="Restricted">Restricted</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="filePath">Document File</label>
+        <input type="file" class="form-control" name="document" id="filePath" required>
+    </div>
+    <input type="hidden" name="action" value="Add">
+<%
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String formattedDate = sdf.format(new java.util.Date());
+%>
+<input type="hidden" name="lastModified" value="<%= formattedDate %>">
+
+<div class="alert text-warning">
+  After saving the document, please click the document link again in the menu bar. This version of NetBeans does not support the GET method for file uploads.
+</div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save Document</button>
+    </div>
+</form>
+
             </div>
         </div>
     </div>

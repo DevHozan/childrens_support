@@ -38,6 +38,17 @@
             margin-bottom: 2rem;
             text-align: center;
         }
+        
+        nav.bg-primary {
+  background-color: #007bff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: -1
+}
+
+
 
         .sidebar .menu-item {
             font-size: 1rem;
@@ -124,6 +135,10 @@
             font-size: 1.25rem;
             margin-bottom: 10px;
         }
+        h2{
+            text-align: center;
+            text-decoration: underline;
+        }
 
         /* Responsive Styles */
         @media (max-width: 992px) {
@@ -165,16 +180,32 @@
                 padding-top: 60px;
             }
         }
+        
     </style>
 </head>
 <body>
     <!-- Sidebar with links -->
  <!-- Sidebar with links -->
-<div class="sidebar">
+ <% 
+   String role = (String) session.getAttribute("role");
+if (role == null || role.equals("")) {
+    response.sendRedirect("login.htm");
+}
+
+    if ("admin".equals(role)) {
+    
+    
+%>
+<nav class="bg-primary position-fixed w-100" style="top: 0; left: 0; z-index: 500;height: 40px;">
+  <!-- Your navbar content goes here -->
+</nav>
+
+<div class="sidebar mt-4">
     <div class="menu-title">ChildGuard</div>
+    <h2><%= role %></h2>
     <a href="#" class="menu-item"><i class="bi bi-house-door"></i> Dashboard</a>
     <a href="CaseModel" class="menu-item"><i class="bi bi-file-earmark-medical"></i> Cases</a>
-    <a href="RiskModel" class="menu-item"><i class="bi bi-shield-lock"></i> Risk</a>
+    <a href="RiskModel" class="menu-item"><i class="bi bi-shield-lock"></i> Investigations</a>
     <a href="AbuseReportModel" class="menu-item"><i class="bi bi-flag"></i> Abuse</a>
     <a href="DocumentModel" class="menu-item"><i class="bi bi-journal-text"></i> Documents</a>
     <a href="collaboration.htm" class="menu-item"><i class="bi bi-people"></i> Collaboration</a>
@@ -183,12 +214,60 @@
     <a href="education.htm" class="menu-item"><i class="bi bi-book"></i> Education</a>
     <a href="FosterFamilyModel" class="menu-item"><i class="bi bi-house-heart"></i> Foster</a>
     <a href="advocacy.htm" class="menu-item"><i class="bi bi-volume-up"></i> Advocacy Portal</a>
+    <a href="children.htm" class="menu-item"><i class="bi bi-volume-up"></i> Childrens</a>
+    <a href="SchoolModel" class="menu-item"><i class="bi bi-volume-up"></i> Schools</a>
     <a href="SupportRequestsModel" class="menu-item"><i class="bi bi-telephone-inbound"></i> Telehealth</a>
-    <a href="LegalSupportModel" class="menu-item"><i class="bi bi-briefcase"></i> Legal Support</a>
+    <a href="UsersModel" class="menu-item"><i class="bi bi-briefcase"></i> Users</a>
     <a href="LogoutModel" class="menu-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
 </div>
+<% 
+    } else if ("teacher".equals(role)) {
+%>
+<div class="sidebar">
+    <div class="menu-title">ChildGuard</div>
+    <h2><%= role %></h2>
+    <a href="#" class="menu-item"><i class="bi bi-house-door"></i> Dashboard</a>
+    <a href="AbuseReportModel" class="menu-item"><i class="bi bi-flag"></i> Abuse</a>
+    <a href="DocumentModel" class="menu-item"><i class="bi bi-journal-text"></i> Documents</a>
+    <a href="emergency.htm" class="menu-item"><i class="bi bi-heart-pulse"></i> Emergency</a>
+    <a href="education.htm" class="menu-item"><i class="bi bi-book"></i> Education</a>
+    <a href="children.htm" class="menu-item"><i class="bi bi-volume-up"></i> Childrens</a>
+    <a href="SchoolModel" class="menu-item"><i class="bi bi-volume-up"></i> Schools</a>
+    <a href="SupportRequestsModel" class="menu-item"><i class="bi bi-telephone-inbound"></i> Telehealth</a>
+    <a href="LogoutModel" class="menu-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+<% 
+    } else if ("guardian".equals(role)) {
+%>
+<div class="sidebar">
+    <div class="menu-title">ChildGuard</div>
+    <h2><%= role %></h2>
+    <a href="#" class="menu-item"><i class="bi bi-house-door"></i> Dashboard</a>
+    <a href="AbuseReportModel" class="menu-item"><i class="bi bi-flag"></i> Abuse</a>
+    <a href="guardian.htm" class="menu-item"><i class="bi bi-person-lock"></i> Guardians</a>
+    <a href="emergency.htm" class="menu-item"><i class="bi bi-heart-pulse"></i> Emergency</a>
+    <a href="FosterFamilyModel" class="menu-item"><i class="bi bi-house-heart"></i> Foster</a>
+    <a href="advocacy.htm" class="menu-item"><i class="bi bi-volume-up"></i> Advocacy Portal</a>
+    <a href="children.htm" class="menu-item"><i class="bi bi-volume-up"></i> Childrens</a>
+    <a href="SchoolModel" class="menu-item"><i class="bi bi-volume-up"></i> Schools</a>
+    <a href="SupportRequestsModel" class="menu-item"><i class="bi bi-telephone-inbound"></i> Telehealth</a>
+    <a href="LogoutModel" class="menu-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+<% 
+    }else{
 
-
+%>
+<div class="sidebar">
+    <div class="menu-title">ChildGuard</div>
+    <h2><%= role %></h2>
+    <a href="#" class="menu-item"><i class="bi bi-house-door"></i> Dashboard</a>
+    <a href="emergency.htm" class="menu-item"><i class="bi bi-heart-pulse"></i> Emergency</a>
+    <a href="FosterFamilyModel" class="menu-item"><i class="bi bi-house-heart"></i> Foster</a>
+    <a href="advocacy.htm" class="menu-item"><i class="bi bi-volume-up"></i> Advocacy Portal</a>
+    <a href="SupportRequestsModel" class="menu-item"><i class="bi bi-telephone-inbound"></i> Telehealth</a>
+    <a href="LogoutModel" class="menu-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+<% } %>
     <!-- Hamburger Menu Button -->
     <div class="menu-toggle">
         <i class="fas fa-bars"></i>

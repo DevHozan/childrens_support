@@ -13,7 +13,7 @@
     <style>
         /* General Styles */
         body {
-            background: url('${pageContext.request.contextPath}/images/bg.png') no-repeat center center fixed; /* Replace with your background image path */
+           // background: url('${pageContext.request.contextPath}/images/bg.png') no-repeat center center fixed; /* Replace with your background image path */
             background-size: cover;
             font-family: Arial, sans-serif;
             margin: 0;
@@ -77,7 +77,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-dark">
     <div class="text-center">
         <img src="${pageContext.request.contextPath}/images/logo.png" alt="ChildGuard Logo" />
     </div>

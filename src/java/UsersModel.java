@@ -118,7 +118,7 @@ String activeCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
 String closedCasesMaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Male' AND WEEK(updated_at, 1) = WEEK(CURDATE(), 1)";
 String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female' AND WEEK(updated_at, 1) = WEEK(CURDATE(), 1)";
 
-// Execute the queries with error handling
+
 
     int activeUsersWeekCount = jdbcTemplate.queryForObject(activeUsersWeekSql, Integer.class);
     int activeCasesWeekCount = jdbcTemplate.queryForObject(activeCountWeekSql, Integer.class);
@@ -178,12 +178,14 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
             String role = request.getParameter("role");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender") != null ? request.getParameter("gender") : "Male";
+
 
             // Hash password for security purposes (you should implement password hashing)
             String passwordHash = password;  // Replace with real password hashing
 
-            String sqlInsert = "INSERT INTO users (username, password_hash, role, email, phone) VALUES (?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sqlInsert, username, passwordHash, role, email, phone);
+            String sqlInsert = "INSERT INTO users (username, password_hash, role, email, phone,gender) VALUES (?, ?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sqlInsert, username, passwordHash, role, email, phone,gender);
             session.setAttribute("message", "User added successfully.");
         } catch (Exception e) {
             session.setAttribute("message", "Error adding user: " + e.getMessage());
@@ -194,12 +196,14 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     private void updateUser(HttpServletRequest request, HttpSession session) {
         try {
             int userId = Integer.parseInt(request.getParameter("user_id"));
+            String username= request.getParameter("username");
             String role = request.getParameter("role");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
+            String gender = request.getParameter("gender") != null ? request.getParameter("gender") : "Male";
 
-            String sqlUpdate = "UPDATE users SET role = ?, email = ?, phone = ? WHERE user_id = ?";
-            jdbcTemplate.update(sqlUpdate, role, email, phone, userId);
+            String sqlUpdate = "UPDATE users SET username= ?, role = ?, email = ?, phone = ?, gender= ? WHERE user_id = ?";
+            jdbcTemplate.update(sqlUpdate,username, role, email, phone,gender, userId);
             session.setAttribute("message", "User updated successfully.");
         } catch (NumberFormatException e) {
             session.setAttribute("message", "Invalid user ID. User update failed.");
@@ -224,7 +228,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
 
     // Method to retrieve all user records
     private List<Map<String, Object>> getUserRecords() {
-        String sql = "SELECT user_id, username, role, email, phone, created_at FROM users";
+        String sql = "SELECT user_id, username, role,gender, email, phone, created_at FROM users";
         return jdbcTemplate.queryForList(sql);
     }
 

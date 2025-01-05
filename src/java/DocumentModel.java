@@ -1,8 +1,11 @@
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletException;
@@ -18,6 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.RequestDispatcher;
 import org.springframework.dao.DataAccessException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 
 @WebServlet("/DocumentModel")
 @MultipartConfig(
@@ -35,76 +39,95 @@ public class DocumentModel extends HttpServlet {
         jdbcTemplate = (JdbcTemplate) context.getBean("jdbcTemplate");
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response)
+private void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+    response.setContentType("text/html;charset=UTF-8");
 
-        try {
-            String action = request.getParameter("action");
-            if (action == null || action.trim().isEmpty()) {
-                request.setAttribute("message", "No action specified.");
-            } else if ("Add".equalsIgnoreCase(action)) {
-                addDocument(request);
-            } else if ("Update".equalsIgnoreCase(action)) {
-                updateDocument(request);
-            } else if ("Delete".equalsIgnoreCase(action)) {
-                deleteDocument(request);
-            } else {
-                request.setAttribute("message", "Unknown action.");
-            }
-
-          
-
-            // SQL queries to get document counts
-String totalDocumentsSql = "SELECT COUNT(*) FROM documents";
-String publicDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'public'";
-String privateDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'private'";
-String restrictedDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'restricted'";
-
-// Fetch counts using jdbcTemplate
-int totalDocuments = jdbcTemplate.queryForObject(totalDocumentsSql, Integer.class);
-int publicDocuments = jdbcTemplate.queryForObject(publicDocumentsSql, Integer.class);
-int privateDocuments = jdbcTemplate.queryForObject(privateDocumentsSql, Integer.class);
-int restrictedDocuments = jdbcTemplate.queryForObject(restrictedDocumentsSql, Integer.class);
-
-// Set attributes to be passed to the JSP
-request.setAttribute("totalDocuments", totalDocuments);
-request.setAttribute("publicDocuments", publicDocuments);
-request.setAttribute("privateDocuments", privateDocuments);
-request.setAttribute("restrictedDocuments", restrictedDocuments);
-
-            List<Map<String, Object>> documentList = getDocumentRecords();
-            request.setAttribute("documentRecords", documentList);
-
-            RequestDispatcher dispatcher = request.getRequestDispatcher("documents.htm");
-            dispatcher.forward(request, response);
-        } catch (Exception e) {
-            log("Error processing request", e);
-            response.sendRedirect("error_page.htm");
+    try {
+        String action = request.getParameter("action");
+        if (action == null || action.trim().isEmpty()) {
+            request.setAttribute("message", "No action specified.");
+        } else if ("Add".equalsIgnoreCase(action)) {
+            addDocument(request,response);
+            
+        } else if ("Update".equalsIgnoreCase(action)) {
+            updateDocument(request);
+        } else if ("Delete".equalsIgnoreCase(action)) {
+            deleteDocument(request);
+        } else {
+            request.setAttribute("message", "Unknown action.");
         }
+
+        // SQL queries to get document counts
+        String totalDocumentsSql = "SELECT COUNT(*) FROM documents";
+        String publicDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'public'";
+        String privateDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'private'";
+        String restrictedDocumentsSql = "SELECT COUNT(*) FROM documents WHERE access_level = 'restricted'";
+
+        // Fetch counts using jdbcTemplate
+        int totalDocuments = jdbcTemplate.queryForObject(totalDocumentsSql, Integer.class);
+        int publicDocuments = jdbcTemplate.queryForObject(publicDocumentsSql, Integer.class);
+        int privateDocuments = jdbcTemplate.queryForObject(privateDocumentsSql, Integer.class);
+        int restrictedDocuments = jdbcTemplate.queryForObject(restrictedDocumentsSql, Integer.class);
+
+        // Set attributes to be passed to the JSP
+        request.setAttribute("totalDocuments", totalDocuments);
+        request.setAttribute("publicDocuments", publicDocuments);
+        request.setAttribute("privateDocuments", privateDocuments);
+        request.setAttribute("restrictedDocuments", restrictedDocuments);
+
+        List<Map<String, Object>> documentList = getDocumentRecords();
+        request.setAttribute("documentRecords", documentList);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("documents.htm");
+        dispatcher.forward(request, response);
+    } catch (HttpRequestMethodNotSupportedException e) {
+        // Catch 405 error and ignore it by logging or redirecting
+        log("Method Not Allowed: Ignoring 405 error", e);
+        response.sendRedirect("error_page.htm"); // Or you can simply ignore the error here
+    } catch (Exception e) {
+        log("Error processing request", e);
+        response.sendRedirect("error_page.htm");
+    }
+}
+
+private void addDocument(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    String documentType = request.getParameter("documentType");
+    String description = request.getParameter("description");
+    String accessLevel = request.getParameter("accessLevel");
+    String lastModified = request.getParameter("lastModified");
+
+    // If lastModified is not set, use the current date and time
+    if (lastModified == null || lastModified.isEmpty()) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        lastModified = sdf.format(new Date());
     }
 
-    private void addDocument(HttpServletRequest request) throws Exception {
-        String documentType = request.getParameter("documentType");
-        String description = request.getParameter("description");
-        String accessLevel = request.getParameter("accessLevel");
-        String lastModified = request.getParameter("lastModified");
+    Part filePart = request.getPart("document");
+    String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+    String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
 
-        Part filePart = request.getPart("document");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-        String uniqueFileName = System.currentTimeMillis() + "_" + fileName;
+    Path uploadDir = Paths.get(getServletContext().getRealPath(""), UPLOAD_DIRECTORY);
+    if (!Files.exists(uploadDir)) Files.createDirectories(uploadDir);
 
-        Path uploadDir = Paths.get(getServletContext().getRealPath(""), UPLOAD_DIRECTORY);
-        if (!Files.exists(uploadDir)) Files.createDirectories(uploadDir);
+    Path filePath = uploadDir.resolve(uniqueFileName);
+    Files.copy(filePart.getInputStream(), filePath);
 
-        Path filePath = uploadDir.resolve(uniqueFileName);
-        Files.copy(filePart.getInputStream(), filePath);
+    String sqlInsert = "INSERT INTO documents (document_type, description, access_level, last_modified, document) VALUES (?, ?, ?, ?, ?)";
+    jdbcTemplate.update(sqlInsert, documentType, description, accessLevel, lastModified, UPLOAD_DIRECTORY + "/" + uniqueFileName);
+    
+    // Set response content type to HTML
+    response.setContentType("text/html");
 
-        String sqlInsert = "INSERT INTO documents (document_type, description, access_level, last_modified, document) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sqlInsert, documentType, description, accessLevel, lastModified, UPLOAD_DIRECTORY + "/" + uniqueFileName);
+    // Output JavaScript to redirect the user
+    PrintWriter out = response.getWriter();
+    out.println("<script type=\"text/javascript\">");
+    out.println("window.location.href = 'DocumentModel';");
+    out.println("</script>");
 
-        request.setAttribute("message", "Document added successfully.");
-    }
+    request.setAttribute("message", "Document added successfully.");
+}
+
 
     private void updateDocument(HttpServletRequest request) throws Exception {
         int documentId = Integer.parseInt(request.getParameter("document_id"));

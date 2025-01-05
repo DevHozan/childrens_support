@@ -14,14 +14,18 @@
     <!-- Summary Cards -->
  <div class="summary-cards">
     <div class="card total-foster-families bg-primary">Total Foster Families <br><span>${fosterFamiliesCount}</span></div>
-    <div class="card male-foster-families bg-info">Male Foster Families <br><span>${fosterFamiliesMaleCount}</span></div>
-    <div class="card female-foster-families bg-success">Female Foster Families <br><span>${fosterFamiliesFemaleCount}</span></div>
+    <div class="card male-foster-families bg-info">Total Capacity <br><span>${fostercapacitysum}</span></div>
+    <div class="card female-foster-families bg-success">Total placements <br><span>${fosterplacementssum}</span></div>
     <div class="card weekly-foster-families bg-secondary">This Week's Foster Families <br><span>${fosterFamiliesWeekCount}</span></div>
 </div>
 
 
     <!-- New Foster Family Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFosterFamilyModal">+ New Foster Family</button>
+
+ <c:if test="${not empty message}">
+<!--    <div class="text-info">${message}</div>-->
+</c:if>
 
     <!-- Foster Family Table -->
     <div class="table-container">

@@ -36,7 +36,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>Case Sn</th>
                     <th>Child Name</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>

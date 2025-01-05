@@ -59,7 +59,7 @@ public class LoginModel extends HttpServlet {
 //                        response.sendRedirect(role + "_dashboard.htm");
                     //}
 
-                     response.sendRedirect("cases.htm");
+                     response.sendRedirect("CaseModel");
                 } else {
                     // If no user is found, set the error message
                     String message = "Invalid credentials";

@@ -56,6 +56,7 @@ public class RiskModel extends HttpServlet {
     String fosterFamiliesCountSql = "SELECT COUNT(*) FROM fosterfamilies";
     String investigationsCountSql = "SELECT COUNT(*) FROM investigations";
     String totalCasesSql = "SELECT COUNT(*) FROM cases";
+    String totalInvestgationsSql = "SELECT COUNT(*) FROM investigations";
     String totalSupportRequestsSql = "SELECT COUNT(*) FROM support_requests";
     
     // Adding queries for Male and Female gender
@@ -76,6 +77,7 @@ public class RiskModel extends HttpServlet {
     int fosterFamiliesCount = jdbcTemplate.queryForObject(fosterFamiliesCountSql, Integer.class);
     int investigationsCount = jdbcTemplate.queryForObject(investigationsCountSql, Integer.class);
     int totalCases = jdbcTemplate.queryForObject(totalCasesSql, Integer.class);
+    int totalInvestgations=jdbcTemplate.queryForObject(totalInvestgationsSql, Integer.class);
     int totalSupportRequests = jdbcTemplate.queryForObject(totalSupportRequestsSql, Integer.class);
 
     // Querying Male and Female specific counts
@@ -96,6 +98,7 @@ public class RiskModel extends HttpServlet {
     request.setAttribute("fosterFamiliesCount", fosterFamiliesCount);
     request.setAttribute("investigationsCount", investigationsCount);
     request.setAttribute("totalCases", totalCases);
+    request.setAttribute("totalInvestgations",totalInvestgations);
     request.setAttribute("totalSupportRequests", totalSupportRequests);
     
     // Adding Male and Female specific counts to the JSP
@@ -115,6 +118,7 @@ String abuseReportsCountWeekSql = "SELECT COUNT(*) FROM abuse_reports WHERE WEEK
 String fosterFamiliesCountWeekSql = "SELECT COUNT(*) FROM fosterfamilies WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 String investigationsCountWeekSql = "SELECT COUNT(*) FROM investigations WHERE WEEK(date, 1) = WEEK(CURDATE(), 1)";
 String totalCasesWeekSql = "SELECT COUNT(*) FROM cases WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
+String totalInvestigationsWeekSql = "SELECT COUNT(*) FROM investigations WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 String totalSupportRequestsWeekSql = "SELECT COUNT(*) FROM support_requests WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 
 // Queries for gender-based statistics within the current week
@@ -134,6 +138,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     int fosterFamiliesWeekCount = jdbcTemplate.queryForObject(fosterFamiliesCountWeekSql, Integer.class);
     int investigationsWeekCount = jdbcTemplate.queryForObject(investigationsCountWeekSql, Integer.class);
     int totalCasesWeek = jdbcTemplate.queryForObject(totalCasesWeekSql, Integer.class);
+     int totalInvestgationWeek = jdbcTemplate.queryForObject(totalInvestigationsWeekSql, Integer.class);
     int totalSupportRequestsWeek = jdbcTemplate.queryForObject(totalSupportRequestsWeekSql, Integer.class);
 
     // Male and Female specific counts within the week
@@ -152,6 +157,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     request.setAttribute("fosterFamiliesWeekCount", fosterFamiliesWeekCount);
     request.setAttribute("investigationsWeekCount", investigationsWeekCount);
     request.setAttribute("totalCasesWeek", totalCasesWeek);
+    request.setAttribute("totalInvestgationWeek",totalInvestgationWeek);
     request.setAttribute("totalSupportRequestsWeek", totalSupportRequestsWeek);
 
     // Adding Male and Female specific counts to the JSP
@@ -179,13 +185,14 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
 
     private void addInvestigation(HttpServletRequest request, HttpSession session) {
         try {
+            String case_id =request.getParameter("case_id");
             String investigationType = request.getParameter("investigationType");
             String date = request.getParameter("date");
             String outcome = request.getParameter("outcome");
 
-            String sqlInsert = "INSERT INTO investigations (investigation_type, date, outcome) " +
-                    "VALUES (?, ?, ?)";
-            jdbcTemplate.update(sqlInsert, investigationType, date, outcome);
+            String sqlInsert = "INSERT INTO investigations (case_id,investigation_type, date, outcome) " +
+                    "VALUES (?,?, ?, ?)";
+            jdbcTemplate.update(sqlInsert, case_id,investigationType, date, outcome);
             session.setAttribute("message", "Investigation record added successfully.");
         } catch (Exception e) {
             session.setAttribute("message", "Error adding investigation: " + e.getMessage());

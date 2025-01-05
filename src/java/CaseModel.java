@@ -62,8 +62,8 @@ public class CaseModel extends HttpServlet {
     String activeUsersMaleSql = "SELECT COUNT(*) FROM users WHERE status = 'active' AND gender = 'Male'";
     String activeUsersFemaleSql = "SELECT COUNT(*) FROM users WHERE status = 'active' AND gender = 'Female'";
     
-    String activeCasesMaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'active' AND gender = 'Male'";
-    String activeCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'active' AND gender = 'Female'";
+    String activeCasesMaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'open' AND gender = 'Male'";
+    String activeCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'open' AND gender = 'Female'";
     
     String closedCasesMaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Male'";
     String closedCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female'";

@@ -52,6 +52,10 @@ public class SupportRequestsModel extends HttpServlet {
     String totalCasesSql = "SELECT COUNT(*) FROM cases";
     String totalSupportRequestsSql = "SELECT COUNT(*) FROM support_requests";
     
+     String RequestopenedCountSql = "SELECT COUNT(*) FROM support_requests WHERE status = 'opened'";
+    String RequestclosedCountSql = "SELECT COUNT(*) FROM support_requests WHERE status = 'closed'";
+    
+    
     // Adding queries for Male and Female gender
     String activeUsersMaleSql = "SELECT COUNT(*) FROM users WHERE status = 'active' AND gender = 'Male'";
     String activeUsersFemaleSql = "SELECT COUNT(*) FROM users WHERE status = 'active' AND gender = 'Female'";
@@ -63,8 +67,12 @@ public class SupportRequestsModel extends HttpServlet {
     String closedCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female'";
 
     // Querying the counts
-    int activeUsersCount = jdbcTemplate.queryForObject(activeUserssql, Integer.class);
+     int activeUsersCount = jdbcTemplate.queryForObject(activeUserssql, Integer.class);
     int activeCasesCount = jdbcTemplate.queryForObject(activeCountSql, Integer.class);
+    
+    int RequestopenedCount = jdbcTemplate.queryForObject(RequestopenedCountSql, Integer.class);
+    int RequestclosedCount = jdbcTemplate.queryForObject(RequestclosedCountSql, Integer.class);
+    
     int closedCasesCount = jdbcTemplate.queryForObject(closedCountSql, Integer.class);
     int abuseReportsCount = jdbcTemplate.queryForObject(abuseReportsCountSql, Integer.class);
     int fosterFamiliesCount = jdbcTemplate.queryForObject(fosterFamiliesCountSql, Integer.class);
@@ -83,6 +91,9 @@ public class SupportRequestsModel extends HttpServlet {
     int closedCasesFemaleCount = jdbcTemplate.queryForObject(closedCasesFemaleSql, Integer.class);
 
     // Setting attributes to be passed to the JSP
+    request.setAttribute("RequestopenedCount", RequestopenedCount);
+    request.setAttribute("RequestclosedCount", RequestclosedCount);
+    
     request.setAttribute("activeUsersCount", activeUsersCount);
     request.setAttribute("activeCasesCount", activeCasesCount);
     request.setAttribute("closedCasesCount", closedCasesCount);
@@ -108,6 +119,7 @@ String closedCountWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'clo
 String abuseReportsCountWeekSql = "SELECT COUNT(*) FROM abuse_reports WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 String fosterFamiliesCountWeekSql = "SELECT COUNT(*) FROM fosterfamilies WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 String investigationsCountWeekSql = "SELECT COUNT(*) FROM investigations WHERE WEEK(date, 1) = WEEK(CURDATE(), 1)";
+String SupportCountWeekSql = "SELECT COUNT(*) FROM support_requests WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 String totalCasesWeekSql = "SELECT COUNT(*) FROM cases WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 String totalSupportRequestsWeekSql = "SELECT COUNT(*) FROM support_requests WHERE WEEK(created_at, 1) = WEEK(CURDATE(), 1)";
 
@@ -129,6 +141,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     int investigationsWeekCount = jdbcTemplate.queryForObject(investigationsCountWeekSql, Integer.class);
     int totalCasesWeek = jdbcTemplate.queryForObject(totalCasesWeekSql, Integer.class);
     int totalSupportRequestsWeek = jdbcTemplate.queryForObject(totalSupportRequestsWeekSql, Integer.class);
+    int SupportCountWeek =jdbcTemplate.queryForObject(SupportCountWeekSql, Integer.class);
 
     // Male and Female specific counts within the week
     int activeUsersMaleWeekCount = jdbcTemplate.queryForObject(activeUsersMaleWeekSql, Integer.class);
@@ -147,6 +160,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     request.setAttribute("investigationsWeekCount", investigationsWeekCount);
     request.setAttribute("totalCasesWeek", totalCasesWeek);
     request.setAttribute("totalSupportRequestsWeek", totalSupportRequestsWeek);
+    request.setAttribute("SupportCountWeek",SupportCountWeek    );
 
     // Adding Male and Female specific counts to the JSP
     request.setAttribute("activeUsersMaleWeekCount", activeUsersMaleWeekCount);
@@ -199,7 +213,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     // Method to handle updating a support request
     private void updateSupportRequest(HttpServletRequest request, HttpSession session) {
         try {
-            int requestId = Integer.parseInt(request.getParameter("request_id"));
+            int requestId = Integer.parseInt(request.getParameter("id"));
             String firstName = request.getParameter("first_name");
             String lastName = request.getParameter("last_name");
             String dateOfBirth = request.getParameter("date_of_birth");
@@ -207,14 +221,15 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
             String emailAddress = request.getParameter("email_address");
             String preferredCommunication = request.getParameter("preferred_communication");
             String location = request.getParameter("location");
+            String status = request.getParameter("status");
             String medicalHistory = request.getParameter("medical_history");
             String description = request.getParameter("description");
 
             String sqlUpdate = "UPDATE support_requests SET first_name = ?, last_name = ?, date_of_birth = ?, phone_number = ?, " +
-                               "email_address = ?, preferred_communication = ?, location = ?, medical_history = ?, description = ? " +
+                               "email_address = ?, preferred_communication = ?, location = ?, medical_history = ?, description = ?, status=? " +
                                "WHERE id = ?";
             jdbcTemplate.update(sqlUpdate, firstName, lastName, dateOfBirth, phoneNumber, emailAddress, preferredCommunication,
-                                location, medicalHistory, description, requestId);
+                                location, medicalHistory, description,status, requestId);
             session.setAttribute("message", "Support request updated successfully.");
         } catch (NumberFormatException e) {
             session.setAttribute("message", "Invalid request ID. Support request update failed.");
@@ -226,7 +241,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
     // Method to handle deleting a support request
     private void deleteSupportRequest(HttpServletRequest request, HttpSession session) {
         try {
-            int requestId = Integer.parseInt(request.getParameter("request_id"));
+            int requestId = Integer.parseInt(request.getParameter("id"));
             String sqlDelete = "DELETE FROM support_requests WHERE id = ?";
             jdbcTemplate.update(sqlDelete, requestId);
             session.setAttribute("message", "Support request deleted successfully.");
@@ -239,7 +254,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
 
     // Method to retrieve all support request records
     private List<Map<String, Object>> getSupportRequestRecords() {
-        String sql = "SELECT id, first_name, last_name, email_address, phone_number, preferred_communication,location,medical_history,description, created_at FROM support_requests";
+        String sql = "SELECT id, first_name, last_name, email_address, phone_number, preferred_communication,location,medical_history,description,status, created_at FROM support_requests";
         return jdbcTemplate.queryForList(sql);
     }
 

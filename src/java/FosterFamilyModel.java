@@ -47,6 +47,8 @@ public class FosterFamilyModel extends HttpServlet {
     String closedCountSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed'";
     String abuseReportsCountSql = "SELECT COUNT(*) FROM abuse_reports";
     String fosterFamiliesCountSql = "SELECT COUNT(*) FROM fosterfamilies";
+    String fostercapacitysumSql = "SELECT Sum(capacity) FROM fosterfamilies";
+    String fosterplacementssumSql = "SELECT Sum(current_placements) FROM fosterfamilies";
     String investigationsCountSql = "SELECT COUNT(*) FROM investigations";
     String totalCasesSql = "SELECT COUNT(*) FROM cases";
     String totalSupportRequestsSql = "SELECT COUNT(*) FROM support_requests";
@@ -62,6 +64,8 @@ public class FosterFamilyModel extends HttpServlet {
     String closedCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female'";
 
     // Querying the counts
+    int fostercapacitysum = jdbcTemplate.queryForObject(fostercapacitysumSql, Integer.class);
+    int fosterplacementssum =jdbcTemplate.queryForObject(fosterplacementssumSql, Integer.class);
     int activeUsersCount = jdbcTemplate.queryForObject(activeUserssql, Integer.class);
     int activeCasesCount = jdbcTemplate.queryForObject(activeCountSql, Integer.class);
     int closedCasesCount = jdbcTemplate.queryForObject(closedCountSql, Integer.class);
@@ -82,6 +86,9 @@ public class FosterFamilyModel extends HttpServlet {
     int closedCasesFemaleCount = jdbcTemplate.queryForObject(closedCasesFemaleSql, Integer.class);
 
     // Setting attributes to be passed to the JSP
+    request.setAttribute("fostercapacitysum",fostercapacitysum);
+    request.setAttribute("fosterplacementssum",fosterplacementssum);
+
     request.setAttribute("activeUsersCount", activeUsersCount);
     request.setAttribute("activeCasesCount", activeCasesCount);
     request.setAttribute("closedCasesCount", closedCasesCount);

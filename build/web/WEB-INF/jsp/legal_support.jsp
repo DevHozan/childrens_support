@@ -21,6 +21,10 @@
 
     <!-- New Support Request Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSupportRequestModal">+ New Support Request</button>
+ 
+ <c:if test="${not empty message}">
+<!--    <div class="text-info">${message}</div>-->
+</c:if>
 
     <!-- Support Request Table -->
     <div class="table-container">

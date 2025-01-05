@@ -12,15 +12,15 @@
 <div class="main-content">
     <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="card total-schools">Total Schools <br><span>50</span></div>
-        <div class="card total-students">Total Students <br><span>5000</span></div>
-        <div class="card primary-schools">Primary Schools <br><span>20</span></div>
-        <div class="card high-schools">High Schools <br><span>30</span></div>
+        <div class="card total-schools bg-info">Total Schools <br><span>${activeschools}</span></div>
+        <div class="card total-students bg-primary">Total Students <br><span>${activeschools}</span></div>
+        <div class="card primary-schools bg-secondary">Primary Schools <br><span>${primary}</span></div>
+        <div class="card high-schools bg-info">High Schools <br><span>${secondary}</span></div>
     </div>
 
     <!-- New School Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newSchoolModal">+ New School</button>
-
+${message}
     <!-- School Table -->
     <div class="table-container">
         <table class="table table-striped">
@@ -31,6 +31,7 @@
                     <th>Address</th>
                     <th>Contact Number</th>
                     <th>Principal</th>
+                    <th>School level</th>
                     <th>Total Students</th>
                     <th>Created At</th>
                     <th>Update</th>
@@ -45,6 +46,7 @@
                         <td>${school.address}</td>
                         <td>${school.contact_number}</td>
                         <td>${school.principal_name}</td>
+                        <td>${school.level}</td>
                         <td>${school.total_students}</td>
                         <td>${school.created_at}</td>
                         <td>
@@ -105,6 +107,14 @@
                         <label for="principalName">Principal Name</label>
                         <input type="text" class="form-control" name="principal_name" id="principalName" required>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="level">level</label>
+                        <select class='form-control' name='level'>
+                            <option value='primary'>Primary</option>
+                            <option value='secondary'>Secondary</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="totalStudents">Total Students</label>
                         <input type="number" class="form-control" name="total_students" id="totalStudents" required>
@@ -148,6 +158,14 @@
                     <div class="form-group">
                         <label for="updatePrincipalName">Principal Name</label>
                         <input type="text" class="form-control" name="principal_name" id="updatePrincipalName" required>
+                    </div>
+                    
+                     <div class="form-group">
+                        <label for="level">level</label>
+                        <select class='form-control' name='level'>
+                            <option value='primary'>Primary</option>
+                            <option value='secondary'>Secondary</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="updateTotalStudents">Total Students</label>

@@ -43,7 +43,7 @@
                     <!-- Card 1 -->
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
-                          <img src="${pageContext.request.contextPath}/images/1.png" alt="Training Modules" class="card-img-top">
+                          <img src="${pageContext.request.contextPath}/images/traini.jpg" alt="Training Modules" class="card-img-top">
                                  <div class="card-body">
                                 <h5 class="card-title text-dark">Training Modules</h5>
                                 <p class="card-text text-dark">Interactive modules covering various parenting skills, child development, and communication strategies.</p>
@@ -55,7 +55,7 @@
                     <!-- Card 2 -->
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
-                            <img src="${pageContext.request.contextPath}/images/2.png" alt="Counseling Services" class="card-img-top">
+                            <img src="${pageContext.request.contextPath}/images/consel.jpg" alt="Counseling Services" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title text-dark">Counseling Services</h5>
                                 <p class="card-text text-dark">Family therapy and support groups are available for guardians needing guidance or advice.</p>
@@ -67,7 +67,7 @@
                     <!-- Card 3 -->
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
-                            <img src="${pageContext.request.contextPath}/images/3.png" alt="Resource Library" class="card-img-top">
+                            <img src="${pageContext.request.contextPath}/images/lib.png" alt="Resource Library" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title text-dark">Resource Library</h5>
                                 <p class="card-text text-dark">Curated collection of articles, guides, and books on parenting and child development.</p>
@@ -79,7 +79,7 @@
                     <!-- Card 4 -->
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
-                            <img src="${pageContext.request.contextPath}/images/4.png" alt="Events and Workshops" class="card-img-top">
+                            <img src="${pageContext.request.contextPath}/images/work.jpg" alt="Events and Workshops" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title text-dark">Events and Workshops</h5>
                                 <p class="card-text text-dark">Announcements and calendars of upcoming events, workshops, webinars, and parenting classes.</p>
@@ -91,9 +91,9 @@
                     <!-- Card 5 -->
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
-                            <img src="${pageContext.request.contextPath}/images/5.png" alt="Feedback and Support" class="card-img-top">
+                            <img src="${pageContext.request.contextPath}/images/feed.png" alt="Feedback and Support" class="card-img-top">
                             <div class="card-body">
-                                <h5 class="card-title">Feedback and Support</h5>
+                                <h5 class="card-title text-dark">Feedback and Support</h5>
                                 <p class="card-text text-dark">Mechanisms for users to provide input, suggestions, and testimonials about their experiences.</p>
                                 <a href="#" class="btn btn-link">Learn more</a>
                                 <button class="btn btn-custom float-end">Get It</button>
@@ -103,7 +103,7 @@
                     <!-- Card 6 -->
                     <div class="col-md-4 mb-4">
                         <div class="card shadow-sm">
-                            <img src="${pageContext.request.contextPath}/images/6.png" alt="Community Forum" class="card-img-top">
+                            <img src="${pageContext.request.contextPath}/images/community.jpg" alt="Community Forum" class="card-img-top">
                             <div class="card-body">
                                 <h5 class="card-title text-dark">Community Forum</h5>
                                 <p class="card-text text-dark">Moderated online forum for guardians to connect, share experiences, and seek advice.</p>

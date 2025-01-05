@@ -13,10 +13,10 @@
     <!-- Summary Cards -->
     <div class="summary-cards">
         <div class="card total-cases">
-            Total Investigations <br><span>${investigationCount}</span>
+            Total Investigations <br><span>${totalInvestgations}</span>
         </div>
         <div class="card weekly-cases">
-            This Week <br><span>${weeklyInvestigations}</span>
+            This Week <br><span>${totalInvestgationWeek}</span>
         </div>
     </div>
 
@@ -29,6 +29,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Case Id</th>
                     <th>Investigation Type</th>
                     <th>Date</th>
                     <th>Outcome</th>
@@ -40,6 +41,7 @@
                 <c:forEach var="investigation" items="${investigationList}">
                     <tr>
                         <td>${investigation.id}</td>
+                        <td>${investigation.case_id}</td>
                         <td>${investigation.investigation_type}</td>
                         <td>${investigation.date}</td>
                         <td>${investigation.outcome}</td>
@@ -85,6 +87,11 @@
                 <form action="RiskModel" method="get">
                     <input type="hidden" name="action" value="insert">
                     <div class="form-group">
+                       <label for="case_id"> Case Serial Number</label>
+                       <input type="text" class="form-control" id="case_id" name="case_id" required>
+                    </div>
+                    <div class="form-group">
+
                         <label for="investigationType">Investigation Type</label>
                         <input type="text" class="form-control" id="investigationType" name="investigationType" required>
                     </div>

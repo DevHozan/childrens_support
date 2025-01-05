@@ -12,15 +12,26 @@
 
 <div class="main-content">
     <!-- Summary Cards -->
-           <div class="summary-cards">
-            <div class="card total-cases">Total Cases <br><span>300</span></div>
-            <div class="card male-cases">Male Cases <br><span>200</span></div>
-            <div class="card female-cases">Female Cases <br><span>100</span></div>
-            <div class="card weekly-cases">This Week <br><span>25</span></div>
-        </div>
-
+    <div class="summary-cards">
+    <div class="card total-cases">
+        Total Users <br><span class="text-dark">${activeUsersCount}</span>
+    </div>
+    <div class="card male-cases">
+        Male  <br><span>${activeUsersMaleCount}</span>
+    </div>
+    <div class="card female-cases">
+        Female <br><span>${activeUsersFemaleCount}</span>
+    </div>
+    <div class="card weekly-cases">
+        This Week <br><span>${activeUsersCount}</span>
+    </div>
+</div>
     <!-- New User Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">+ New User</button>
+     
+ <c:if test="${not empty message}">
+<!--    <div class="text-info">${message}</div>-->
+</c:if>
 
     <!-- User Table -->
     <div class="table-container">
@@ -31,6 +42,7 @@
                     <th>Username</th>
                     <th>Role</th>
                     <th>Email</th>
+                    <th>Gender</th>
                     <th>Phone</th>
                     <th>Created At</th>
                     <th>Update</th>
@@ -44,6 +56,7 @@
                         <td>${user.username}</td>
                         <td>${user.role}</td>
                         <td>${user.email}</td>
+                        <td>${user.gender}</td>
                         <td>${user.phone}</td>
                         <td>${user.created_at}</td>
                         <td>
@@ -56,7 +69,7 @@
                                                                                                                                                                                                                                               <%
     // Check if the session attribute 'id' exists
     if (session.getAttribute("role") != "admin") { %>
-      <form action="UsersModel" method="post" style="display:inline;">
+      <form action="UsersModel" method="get" style="display:inline;">
                                 <input type="hidden" name="action" value="Delete">
                                 <input type="hidden" name="user_id" value="${user.user_id}">
                                 <button class="btn btn-danger btn-sm" type="submit">
@@ -98,11 +111,24 @@
                     </div>
                     <div class="form-group">
                         <label for="role">Role</label>
-                        <input type="text" class="form-control" name="role" id="role" required>
+                        <select class="form-control" name="role">
+                            <option value="admin">Admin</option>
+                            <option value='teacher'>Teacher</option>
+                             <option value='guardian'>Guardian</option>
+
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">gender</label>
+                        <select class="form-control" name="gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone</label>
@@ -143,6 +169,15 @@
                     <div class="form-group">
                         <label for="updateEmail">Email</label>
                         <input type="email" class="form-control" name="email" id="updateEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="updateGender">Gender</label>
+                    <label for="gender">gender</label>
+                        <select class="form-control" name="gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="updatePhone">Phone</label>

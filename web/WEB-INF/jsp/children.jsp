@@ -13,14 +13,17 @@
 <div class="main-content">
     <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="card total-children">Total Children <br><span>${totalChildren}</span></div>
-        <div class="card boys">Boys <br><span>${boysCount}</span></div>
-        <div class="card girls">Girls <br><span>${girlsCount}</span></div>
-        <div class="card risk-high">High Risk <br><span>${highRiskCount}</span></div>
+        <div class="card total-children bg-info">Total Children <br><span>${childrencount}</span></div>
+        <div class="card boys bg-primary">Boys <br><span>${activeBoysCount}</span></div>
+        <div class="card girls bg-secondary">Girls <br><span>${activeGirlsCount}</span></div>
+        <div class="card risk-high bg-warning">High Risk <br><span>${highRiskChildrenCount}</span></div>
     </div>
 
     <!-- New Child Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newChildModal">+ New Child</button>
+ <c:if test="${not empty message}">
+    <div class="text-info">${message}</div>
+</c:if>
 
     <!-- Children Table -->
     <div class="table-container">

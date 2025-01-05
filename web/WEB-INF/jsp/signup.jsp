@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChildGuard Registration</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Optional: Bootstrap Icons for modern icon use -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <style>
         body {
             margin: 0;
@@ -14,8 +17,8 @@
             height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            background: url('${pageContext.request.contextPath}/images/bg.png') no-repeat center center/cover;
+            align-items: center
+           // background: url('${pageContext.request.contextPath}/images/bg.png') no-repeat center center/cover;
         }
         .form-container {
             background: #2c084e;
@@ -90,7 +93,7 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-dark">
     
     <div class="form-container">
         <img src="${pageContext.request.contextPath}/images/logo.png" alt="ChildGuard Logo">
@@ -106,7 +109,11 @@
             </div>
             <div class="form-group">
                 <label for="role"><i class="bi bi-person-badge"></i> Role</label>
-                <input type="text" class="form-control" name="role" id="role" placeholder="Enter your role" required>
+                 <select class='form-control' name='role'>
+                            <option value='student'>Student</option>
+                            <option value='teacher'>Teacher</option>
+                             <option value='guardian'>Guardian</option>
+                 </select>
             </div>
             <div class="form-group">
                 <label for="email"><i class="bi bi-envelope"></i> Email</label>

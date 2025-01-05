@@ -13,14 +13,14 @@
 <div class="main-content">
     <!-- Summary Cards -->
     <div class="summary-cards">
-        <div class="card total-reports bg-primary">Total Reports <br><span class="text-dark">${abuseReportsCount}</span></div>
-        <div class="card resolved-reports bg-info">Resolved <br><span>${resolvedReports}</span></div>
+        <div class="card total-reports bg-primary">Total Abuses <br><span class="text-dark">${abuseReportsCount}</span></div>
+        <div class="card resolved-reports bg-info">Resolved <br><span>${closedReports}</span></div>
         <div class="card pending-reports bg-success">Pending <br><span>${pendingReports}</span></div>
-        <div class="card weekly-reports">This Week <br><span>${weeklyReports}</span></div>
+        <div class="card weekly-reports bg-info">This Week <br><span>${abuseReportsWeekCount}</span></div>
     </div>
 
     <!-- New Report Button -->
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newReportModal">+ New Report</button>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newReportModal">+ New Abuse</button>
 
     <!-- Abuse Reports Table -->
     <div class="table-container">
@@ -99,7 +99,11 @@
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <input type="text" class="form-control" name="status" id="status" required>
+                        <select name="status" id="status" class="form-control">
+                            <option>Open</option>
+                            <option>Closed</option>
+                            <option>Pending</option>
+                        </select>
                     </div>
                     <input type="hidden" name="action" value="Add">
                     <div class="modal-footer">
@@ -123,7 +127,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="AbuseReportModel" method="post">
+                <form action="AbuseReportModel" method="get">
                     <input type="hidden" name="report_id" id="updateReportId">
                     <div class="form-group">
                         <label for="updateChildName">Child Name</label>
@@ -135,7 +139,11 @@
                     </div>
                     <div class="form-group">
                         <label for="updateStatus">Status</label>
-                        <input type="text" class="form-control" name="status" id="updateStatus" required>
+                        <select name="status" id="status" class="form-control">
+                            <option>Open</option>
+                            <option>Closed</option>
+                            <option>Pending</option>
+                        </select>
                     </div>
                     <input type="hidden" name="action" value="Update">
                     <div class="modal-footer">

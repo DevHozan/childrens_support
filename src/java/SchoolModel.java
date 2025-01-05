@@ -29,6 +29,10 @@ public class SchoolModel extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         try (PrintWriter out = response.getWriter()) {
+if (request.getAttribute("message") != null) {
+    request.removeAttribute("message");
+}
+
             HttpSession session = request.getSession();
             String action = request.getParameter("action");
 
@@ -41,9 +45,17 @@ public class SchoolModel extends HttpServlet {
             }
             
      
-        String activeUserssql = "SELECT COUNT(*) FROM users WHERE status = 'active'";
+    String activeUserssql = "SELECT COUNT(*) FROM users WHERE status = 'active'";
     String activeCountSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'active'";
     String closedCountSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed'";
+    
+    String activeschoolssql = "SELECT COUNT(*) FROM schools";
+    String primarySql = "SELECT COUNT(*) FROM schools WHERE level='primary'";
+    String secondarySql = "SELECT COUNT(*) FROM schools WHERE level='secondary'";
+    
+    String totalstudentsSql = "SELECT SUM(total_students) FROM schools";
+        
+    
     String abuseReportsCountSql = "SELECT COUNT(*) FROM abuse_reports";
     String fosterFamiliesCountSql = "SELECT COUNT(*) FROM fosterfamilies";
     String investigationsCountSql = "SELECT COUNT(*) FROM investigations";
@@ -61,6 +73,14 @@ public class SchoolModel extends HttpServlet {
     String closedCasesFemaleSql = "SELECT COUNT(*) FROM cases WHERE case_status = 'closed' AND gender = 'Female'";
 
     // Querying the counts
+    
+  
+
+    int activeschools = jdbcTemplate.queryForObject(activeschoolssql, Integer.class);
+    int primary = jdbcTemplate.queryForObject(primarySql, Integer.class);
+    int secondary = jdbcTemplate.queryForObject(secondarySql, Integer.class);
+    int totalstudents = jdbcTemplate.queryForObject(totalstudentsSql, Integer.class);
+    
     int activeUsersCount = jdbcTemplate.queryForObject(activeUserssql, Integer.class);
     int activeCasesCount = jdbcTemplate.queryForObject(activeCountSql, Integer.class);
     int closedCasesCount = jdbcTemplate.queryForObject(closedCountSql, Integer.class);
@@ -81,6 +101,13 @@ public class SchoolModel extends HttpServlet {
     int closedCasesFemaleCount = jdbcTemplate.queryForObject(closedCasesFemaleSql, Integer.class);
 
     // Setting attributes to be passed to the JSP
+     request.setAttribute("activeschools", activeschools);
+    request.setAttribute("primary", primary);
+    request.setAttribute("secondary", secondary);
+    request.setAttribute("atotalstudents", totalstudents);
+    
+    
+    
     request.setAttribute("activeUsersCount", activeUsersCount);
     request.setAttribute("activeCasesCount", activeCasesCount);
     request.setAttribute("closedCasesCount", closedCasesCount);
@@ -178,12 +205,13 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
             String address = request.getParameter("address");
             String contactNumber = request.getParameter("contact_number");
             String principalName = request.getParameter("principal_name");
+            String level = request.getParameter("level");
             int totalStudents = Integer.parseInt(request.getParameter("total_students"));
             String notes = request.getParameter("notes");
             String website = request.getParameter("website");
 
-            String sqlInsert = "INSERT INTO schools (school_name, address, contact_number, principal_name, total_students, notes, website) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            jdbcTemplate.update(sqlInsert, schoolName, address, contactNumber, principalName, totalStudents, notes, website);
+            String sqlInsert = "INSERT INTO schools (school_name, address, contact_number, principal_name,level, total_students, notes, website) VALUES (?,?, ?, ?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sqlInsert, schoolName, address, contactNumber, principalName,level, totalStudents, notes, website);
             session.setAttribute("message", "School added successfully.");
         } catch (Exception e) {
             session.setAttribute("message", "Error adding school: " + e.getMessage());
@@ -198,12 +226,13 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
             String address = request.getParameter("address");
             String contactNumber = request.getParameter("contact_number");
             String principalName = request.getParameter("principal_name");
+            String level = request.getParameter("level");
             int totalStudents = Integer.parseInt(request.getParameter("total_students"));
             String notes = request.getParameter("notes");
             String website = request.getParameter("website");
 
-            String sqlUpdate = "UPDATE schools SET school_name = ?, address = ?, contact_number = ?, principal_name = ?, total_students = ?, notes = ?, website = ? WHERE school_id = ?";
-            jdbcTemplate.update(sqlUpdate, schoolName, address, contactNumber, principalName, totalStudents, notes, website, schoolId);
+            String sqlUpdate = "UPDATE schools SET school_name = ?, address = ?, contact_number = ?, principal_name = ?,level=?, total_students = ?, notes = ?, website = ? WHERE school_id = ?";
+            jdbcTemplate.update(sqlUpdate, schoolName, address, contactNumber, principalName,level, totalStudents, notes, website, schoolId);
             session.setAttribute("message", "School updated successfully.");
         } catch (Exception e) {
             session.setAttribute("message", "Error updating school: " + e.getMessage());
@@ -224,7 +253,7 @@ String closedCasesFemaleWeekSql = "SELECT COUNT(*) FROM cases WHERE case_status 
 
     // Method to retrieve all school records
     private List<Map<String, Object>> getSchoolRecords() {
-        String sql = "SELECT school_id, school_name, address, contact_number, principal_name, total_students, created_at, updated_at, notes, website FROM schools";
+        String sql = "SELECT school_id, school_name, address, contact_number, principal_name,level, total_students, created_at, updated_at, notes, website FROM schools";
         return jdbcTemplate.queryForList(sql);
     }
 
