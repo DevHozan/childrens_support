@@ -40,9 +40,6 @@
 
     <!-- New Document Button -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#newDocumentModal">+ New Document</button>
- <c:if test="${not empty message}">
-<!--    <div class="text-info">${message}</div>-->
-</c:if>
 
     <!-- Documents Table -->
     <div class="table-container">
@@ -111,7 +108,7 @@
                 </button>
             </div>
             <div class="modal-body">
-               <form action="DocumentModel" method="get" enctype="multipart/form-data">
+               <form action="DocumentModel" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="documentType">Document Type</label>
         <input type="text" class="form-control" name="documentType" id="documentType" required>
@@ -139,7 +136,7 @@
 %>
 <input type="hidden" name="lastModified" value="<%= formattedDate %>">
 
-<div class="alert text-warning">
+<div class="alert-red">
   After saving the document, please click the document link again in the menu bar. This version of NetBeans does not support the GET method for file uploads.
 </div>
 
